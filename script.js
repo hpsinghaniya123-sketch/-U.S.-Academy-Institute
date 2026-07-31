@@ -1,204 +1,214 @@
-/* =====================================
-   SATYAM RAJPUT WEBSITE - SCRIPT
-===================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    /* ==============================
-       CURRENT YEAR IN FOOTER
-    ============================== */
-
-    const year = document.getElementById("year");
-
-    if (year) {
-        year.textContent = new Date().getFullYear();
-    }
+// ========================================
+// U.S ACADEMY & INSTITUTE
+// Website JavaScript
+// ========================================
 
 
-    /* ==============================
-       SMOOTH SCROLLING
-    ============================== */
+// ========================================
+// CURRENT YEAR
+// ========================================
 
-    const links = document.querySelectorAll('a[href^="#"]');
+const yearElement = document.getElementById("year");
 
-    links.forEach(function (link) {
-
-        link.addEventListener("click", function (event) {
-
-            const targetId = this.getAttribute("href");
-
-            if (targetId === "#") {
-                return;
-            }
-
-            const target = document.querySelector(targetId);
-
-            if (target) {
-
-                event.preventDefault();
-
-                target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-
-            }
-
-        });
-
-    });
+if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+}
 
 
-    /* ==============================
-       NAVBAR SHADOW ON SCROLL
-    ============================== */
 
-    const header = document.querySelector("header");
+// ========================================
+// CONTACT FORM
+// ========================================
 
-    window.addEventListener("scroll", function () {
+const contactForm = document.getElementById("contactForm");
+const formMessage = document.getElementById("formMessage");
 
-        if (!header) {
+if (contactForm) {
+
+    contactForm.addEventListener("submit", function(event) {
+
+        // Stop the page from refreshing
+        event.preventDefault();
+
+
+        // Get form values
+        const name =
+            document.getElementById("name").value.trim();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const phone =
+            document.getElementById("phone").value.trim();
+
+        const message =
+            document.getElementById("message").value.trim();
+
+
+
+        // Check required fields
+        if (name === "" || email === "" || message === "") {
+
+            formMessage.textContent =
+                "Please fill in all required fields.";
+
+            formMessage.style.color = "red";
+
             return;
         }
 
-        if (window.scrollY > 50) {
 
-            header.style.boxShadow =
-                "0 5px 25px rgba(0, 0, 0, 0.5)";
 
-        } else {
+        // Check email format
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            header.style.boxShadow = "none";
+        if (!emailPattern.test(email)) {
+
+            formMessage.textContent =
+                "Please enter a valid email address.";
+
+            formMessage.style.color = "red";
+
+            return;
+        }
+
+
+
+        // Show success message
+        formMessage.textContent =
+            "Thank you, " + name +
+            "! Your message has been received.";
+
+        formMessage.style.color = "green";
+
+
+        // Clear the form
+        contactForm.reset();
+
+    });
+
+}
+
+
+
+// ========================================
+// SMOOTH NAVIGATION
+// ========================================
+
+const navigationLinks =
+    document.querySelectorAll("nav a");
+
+
+navigationLinks.forEach(function(link) {
+
+    link.addEventListener("click", function(event) {
+
+        const targetId =
+            this.getAttribute("href");
+
+        const target =
+            document.querySelector(targetId);
+
+
+        if (target) {
+
+            event.preventDefault();
+
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
         }
 
     });
 
+});
 
-    /* ==============================
-       GALLERY HOVER EFFECT
-    ============================== */
 
-    const galleryItems =
-        document.querySelectorAll(".gallery-item");
 
-    galleryItems.forEach(function (item) {
+// ========================================
+// SCROLL ANIMATION
+// ========================================
 
-        item.addEventListener("mouseenter", function () {
+const animatedElements =
+    document.querySelectorAll(
+        ".quick-card, .facility-card, .discipline-card, .why-grid > div"
+    );
 
-            this.style.cursor = "pointer";
 
-        });
+const observer =
+    new IntersectionObserver(
+        function(entries) {
+
+            entries.forEach(function(entry) {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.style.opacity = "1";
+
+                    entry.target.style.transform =
+                        "translateY(0)";
+
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.15
+        }
+    );
+
+
+
+animatedElements.forEach(function(element) {
+
+    element.style.opacity = "0";
+
+    element.style.transform =
+        "translateY(25px)";
+
+    element.style.transition =
+        "opacity 0.6s ease, transform 0.6s ease";
+
+    observer.observe(element);
+
+});
+
+
+
+// ========================================
+// FLOATING CALL BUTTON
+// ========================================
+
+const floatingCall =
+    document.querySelector(".floating-call");
+
+
+if (floatingCall) {
+
+    floatingCall.addEventListener("click", function() {
+
+        console.log(
+            "Calling U.S ACADEMY & INSTITUTE: 9935650036"
+        );
 
     });
 
-
-    /* ==============================
-       BUTTON CLICK EFFECT
-    ============================== */
-
-    const buttons =
-        document.querySelectorAll(
-            ".instagram-button, .about-button, .nav-button"
-        );
-
-    buttons.forEach(function (button) {
-
-        button.addEventListener("click", function () {
-
-            this.style.transform = "scale(0.97)";
-
-            setTimeout(() => {
-
-                this.style.transform = "";
-
-            }, 150);
-
-        });
-
-    });
+}
 
 
-    /* ==============================
-       SIMPLE SCROLL REVEAL
-    ============================== */
 
-    const revealElements =
-        document.querySelectorAll(
-            ".feature, .about-box, .gallery-item, .contact-box"
-        );
+// ========================================
+// PAGE LOADED MESSAGE
+// ========================================
 
-    const revealObserver =
-        new IntersectionObserver(
-            function (entries) {
-
-                entries.forEach(function (entry) {
-
-                    if (entry.isIntersecting) {
-
-                        entry.target.style.opacity = "1";
-
-                        entry.target.style.transform =
-                            "translateY(0)";
-
-                        revealObserver.unobserve(
-                            entry.target
-                        );
-
-                    }
-
-                });
-
-            },
-            {
-                threshold: 0.15
-            }
-        );
-
-
-    revealElements.forEach(function (element) {
-
-        element.style.opacity = "0";
-
-        element.style.transform =
-            "translateY(25px)";
-
-        element.style.transition =
-            "opacity 0.7s ease, transform 0.7s ease";
-
-        revealObserver.observe(element);
-
-    });
-
-
-    /* ==============================
-       INSTAGRAM BUTTON
-    ============================== */
-
-    const instagramButtons =
-        document.querySelectorAll(
-            'a[href*="instagram.com"]'
-        );
-
-    instagramButtons.forEach(function (button) {
-
-        button.addEventListener("click", function () {
-
-            console.log(
-                "Opening Satyam Rajput Instagram profile..."
-            );
-
-        });
-
-    });
-
-
-    /* ==============================
-       WELCOME MESSAGE
-    ============================== */
+window.addEventListener("load", function() {
 
     console.log(
-        "Welcome to Satyam Rajput's website! 🚀"
+        "U.S ACADEMY & INSTITUTE website loaded successfully."
     );
 
 });
